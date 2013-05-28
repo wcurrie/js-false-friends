@@ -2,42 +2,25 @@ var liveDemo = (function() {
     var snippetMapping = {};
     var snippetId = 1;
 
-    function DummyConsole(result) {
-        function stringify(v) {
-            try {
-                return JSON.stringify(v);
-            } catch (e) {
-                return "" + v;
-            }
-        }
-
-        this.log = function(v) {
-            if (typeof v === 'object') {
-                result.push(stringify(v));
-            } else {
-                result.push("" + v);
-            }
-        };
-    }
-
-    function exec(code) {
-        var result = [];
-        var console = new DummyConsole(result);
-        try {
-            eval(code);
-            return result.join("\n");
-        } catch (e) {
-            return e;
-        }
-    }
-
     function codeFor(snippetId) {
         return snippetMapping[snippetId].text();
     }
 
+    function showExecutionResult(snippetId, result) {
+        $("#snippetResult-" + snippetId).text("" + result);
+    }
+
     function executeSnippet(snippetId) {
         var code = codeFor(snippetId);
-        $("#snippetResult-" + snippetId).text("" + exec(code));
+        if (snippetMapping[snippetId].data("exec-inline") === true) {
+            showExecutionResult(snippetId, exec(code, window));
+        } else {
+            var worker = new Worker("js/eval-worker.js");
+            worker.postMessage(code);
+            worker.addEventListener("message", function(e) {
+                showExecutionResult(snippetId, e.data);
+            });
+        }
         return false;
     }
 
@@ -45,18 +28,20 @@ var liveDemo = (function() {
         init: function() {
             $("pre code").each(function() {
                 var $this = $(this);
-                snippetMapping[snippetId] = $this;
                 var demoType = $this.data("demo");
-                var click;
-                if (demoType === "show-output") {
-                    $('<div class="fragment"><pre class="evalResult"><code id="snippetResult-' + snippetId + '"></code></pre></div>').insertAfter(this.parentNode);
-                    executeSnippet(snippetId);
-                    click = 'liveDemo.execute(' + snippetId + ')';
-                } else {
-                    click = 'liveDemo.show(' + snippetId + ')';
+                if (demoType) {
+                    snippetMapping[snippetId] = $this;
+                    var click;
+                    if (demoType === "show-output") {
+                        $('<div class="fragment"><pre class="evalResult"><code id="snippetResult-' + snippetId + '"></code></pre></div>').insertAfter(this.parentNode);
+                        executeSnippet(snippetId);
+                        click = 'liveDemo.execute(' + snippetId + ')';
+                    } else {
+                        click = 'liveDemo.show(' + snippetId + ')';
+                    }
+                    $('<a class="btn demoButton" href="#" onclick="return ' + click + '"><i class="icon-play"></i></a>').appendTo(this);
+                    snippetId++;
                 }
-                $('<a class="btn demoButton" href="#" onclick="return ' + click + '"><i class="icon-play"></i></a>').appendTo(this);
-                snippetId++;
             });
         },
         show: function(snippetId) {

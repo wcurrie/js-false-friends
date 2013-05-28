@@ -44,6 +44,28 @@
 				</section>
 
 				<section>
+                    <figure>
+                        <blockquote>
+                            &ldquo;JavaScript is the only language people feel like they don't need to learn to use.&ldquo;
+                            <div style="text-align: right">
+                                <small>Douglas Crockford</small>
+                            </div>
+                        </blockquote>
+                    </figure>
+
+                    <small class="fragment">He's also called it the world's most <a href="http://www.crockford.com/javascript/javascript.html">misunderstood</a> programming language.</small>
+                    <!--
+                    * A language targeted at amateurs adding bling to web pages
+                    * Chequeured history including a name selected to confuse
+                    -->
+				</section>
+
+                <!--
+                Why is JS interesting to Tyro?
+                To some extent JS (plus HTML, CSS and the APIs) has succeeded where Java failed: write once run anywhere
+                -->
+
+				<section>
 					<h2>Javascript and Java</h2>
 					<p>
 						Same same but different
@@ -67,7 +89,7 @@
 				<section>
 					<section>
 						<h3><code>this</code></h3>
-						<pre><code data-trim>
+						<pre><code data-trim data-demo="dialog">
 <button onClick="alert(this.textContent)">Click Me</button>
 						</code></pre>
 						<pre class="fragment"><code data-trim>
@@ -101,7 +123,7 @@ obj.aMethod();
 					<section>
 						<h2>Function</h2>
 						<p>Familiar to a C developer</p>
-						<pre><code data-trim data-demo="show-output" contenteditable>
+						<pre><code data-trim data-demo="show-output" data-exec-inline="true" contenteditable>
 var obj = {
     aValue: 'Hi',
     aMethod: function() { console.log(this.aValue); }
@@ -151,37 +173,88 @@ foo.apply("a", [1,'ignored']);
 				</section>
 
 				<section>
-					<h2>Slides</h2>
+					<h2>Recap</h2>
 					<p>
-						Not a coder? No problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slid.es" target="_blank">http://slid.es</a>.
+						TODO Example using jquery callback
 					</p>
 				</section>
 
 				<section>
-					<h2>Point of View</h2>
+					<h2>Why the complexity?</h2>
 					<p>
-						Press <strong>ESC</strong> to enter the slide overview.
+						TODO Example showing code reuse through prototypal inheritance
 					</p>
+				</section>
+                <section>
+				<section>
+					<h2>Curly Brackets {}</h2>
 					<p>
-						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
+						In most other languages {} create a new scope. Not so in Javascript.
 					</p>
+                    <pre><code data-trim data-demo="show-output" contenteditable>
+var buttons = [];
+for (var i = 1; i < 4; i++) {
+    buttons.push({
+        click: function() {
+            console.log('clicked ' + i);
+        }
+    });
+}
+buttons[0].click();
+                    </code></pre>
+                    <p class="fragment">The only way to get a new scope is to create a <code>function</code> that declares a variable.</p>
+                    <!--
+                    * Add IIFE function(i) wrapper to show one fix
+                    -->
+				</section>
+				<section>
+					<h2>A neater way</h2>
+					<p>
+						To deal with the looping problem
+					</p>
+                    <pre><code data-trim data-demo="show-output" contenteditable>
+var buttons = [];
+[1,2,3].forEach(function(i) {
+    buttons.push({
+        click: function() {
+            console.log('clicked ' + i);
+        }
+    });
+});
+buttons[0].click();
+                    </code></pre>
+				</section>
+                </section>
+
+				<section>
+					<h2>IIFE</h2>
+                    <h4>Immediately Invoked Function Expression</h4>
+					<p>
+						In Java there is a dedicated <code>package</code> keyword to control visibility of names.
+                        Not so in Javascript.
+					</p>
+                    <pre class="fragment"><code data-trim class="javascript">
+(function( window ) {
+    var jQuery;
+    // oodles and oodles of symbols that shouldn't be global
+    jQuery.foo = {};  // plus a few that should be exposed under '$'
+
+    window.jQuery = window.$ = jQuery;
+})( window );
+                    </code></pre>
+                    <p class="fragment">Understanding this concept makes reading codebases like <a href="http://code.jquery.com/jquery-1.10.0.js">jquery</a> slightly less mind bending.</p>
 				</section>
 
 				<section>
-					<h2>Works in Mobile Safari</h2>
-					<p>
-						Try it out! You can swipe through the slides and pinch your way to the overview.
-					</p>
-				</section>
-
-				<section>
-					<h2>Marvelous Unordered List</h2>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
+					<h2>global by default</h2>
+					<p>Use <code>var</code> when declaring a variable unless you want a global</p>
+                    <pre><code data-trim data-demo="show-output" contenteditable>
+function f() {
+    oops = 'a value';
+}
+f();
+console.log(oops);
+                    </code></pre>
 				</section>
 
 				<section>
@@ -404,6 +477,7 @@ function linkify( selector ) {
 
         <script src="js/jquery-1.8.2.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/eval-worker.js"></script>
         <script src="plugin/live-demo/live-demo.js"></script>
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>

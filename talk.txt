@@ -1,27 +1,14 @@
-similarities
-* 4 letters
-* curly brackets
-* semicolons
-* '.' to invoke a method
-* new operator
+Revisit:
+ => functions in ES6
+ simpler this binding in Typescript and Coffeescript
+ ES6 let statement
 
-differences
-* static vs dynamic typing
-* no class keyword (yet)
+Add command+enter to execute script demos
 
-this
-* motivating example
-* 4 invocation patterns
- - method
- - function
- - constructor
- - apply (or call)
-* why? allows code reuse: delegation via prototype chain
+Add 'js is the only language people can program without reading a book quote'
 
 
 {}
-* no block scope (without ES6 let statement)
-* IIFE
 * variables are global without 'var'
 * hoisting
 
