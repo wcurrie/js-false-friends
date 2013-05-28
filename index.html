@@ -92,7 +92,7 @@
 						<pre><code data-trim data-demo="dialog">
 <button onClick="alert(this.textContent)">Click Me</button>
 						</code></pre>
-						<pre class="fragment"><code data-trim>
+						<pre class="fragment"><code data-trim data-demo="dialog">
 <script>
     function foo(){ alert(this.textContent); }
 </script>
@@ -257,14 +257,18 @@ console.log(oops);
                     </code></pre>
 				</section>
 
-				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
-				</section>
+                <section>
+                    <h2>hoisting</h2>
+                    <p>Using <code>var</code> in the middle of a block does something surprising</p>
+                    <pre><code data-trim data-demo="show-output" contenteditable>
+function f() {
+    console.log(a);
+    var a = 'hi';
+    console.log(a);
+}
+f();
+                    </code></pre>
+                </section>
 
 				<section data-markdown>
 					<script type="text/template">
@@ -430,14 +434,14 @@ function linkify( selector ) {
 					</a>
 				</section>
 
-				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, below is an example that's been uploaded to SlideShare.</p>
-					<iframe id="slideshare" src="http://www.slideshare.net/slideshow/embed_code/13872948" width="455" height="356" style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
-					<script>
-						document.getElementById('slideshare').attributeName = 'allowfullscreen';
-					</script>
-				</section>
+				<!--<section>-->
+					<!--<h2>Export to PDF</h2>-->
+					<!--<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, below is an example that's been uploaded to SlideShare.</p>-->
+					<!--<iframe id="slideshare" src="http://www.slideshare.net/slideshow/embed_code/13872948" width="455" height="356" style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>-->
+					<!--<script>-->
+						<!--document.getElementById('slideshare').attributeName = 'allowfullscreen';-->
+					<!--</script>-->
+				<!--</section>-->
 
 				<section>
 					<h2>Take a Moment</h2>

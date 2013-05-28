@@ -30,17 +30,22 @@ var liveDemo = (function() {
                 var $this = $(this);
                 var demoType = $this.data("demo");
                 if (demoType) {
-                    snippetMapping[snippetId] = $this;
+                    var thisSnippet = snippetId++;
+                    snippetMapping[thisSnippet] = $this;
                     var click;
                     if (demoType === "show-output") {
-                        $('<div class="fragment"><pre class="evalResult"><code id="snippetResult-' + snippetId + '"></code></pre></div>').insertAfter(this.parentNode);
-                        executeSnippet(snippetId);
-                        click = 'liveDemo.execute(' + snippetId + ')';
+                        $('<div class="fragment"><pre class="evalResult"><code id="snippetResult-' + thisSnippet + '"></code></pre></div>').insertAfter(this.parentNode);
+                        executeSnippet(thisSnippet);
+                        click = 'liveDemo.execute(' + thisSnippet + ')';
                     } else {
-                        click = 'liveDemo.show(' + snippetId + ')';
+                        click = 'liveDemo.show(' + thisSnippet + ')';
                     }
                     $('<a class="btn demoButton" href="#" onclick="return ' + click + '"><i class="icon-play"></i></a>').appendTo(this);
-                    snippetId++;
+                    $this.keydown(function(e) {
+                        if (e.which === 13 && e.metaKey) {
+                            executeSnippet(thisSnippet)
+                        }
+                    })
                 }
             });
         },

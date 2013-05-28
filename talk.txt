@@ -3,13 +3,7 @@ Revisit:
  simpler this binding in Typescript and Coffeescript
  ES6 let statement
 
-Add command+enter to execute script demos
-
-Add 'js is the only language people can program without reading a book quote'
-
-
 {}
-* variables are global without 'var'
 * hoisting
 
 closures
