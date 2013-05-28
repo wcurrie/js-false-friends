@@ -1,0 +1,39 @@
+similarities
+* 4 letters
+* curly brackets
+* semicolons
+* '.' to invoke a method
+* new operator
+
+differences
+* static vs dynamic typing
+* no class keyword (yet)
+
+this
+* motivating example
+* 4 invocation patterns
+ - method
+ - function
+ - constructor
+ - apply (or call)
+* why? allows code reuse: delegation via prototype chain
+
+
+{}
+* no block scope (without ES6 let statement)
+* IIFE
+* variables are global without 'var'
+* hoisting
+
+closures
+* for loop to build a set of buttons
+
+for in loop can return unwanted members
+
+where are my classes?
+
+== vs === 
+* type coercion
+
+only one thread
+* show for loop locking up the UI?

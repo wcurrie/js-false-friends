@@ -4,10 +4,10 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+		<title>JS false friends for Java programmers</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+		<meta name="description" content="Some learnings from a blundering Java programmer">
+		<meta name="author" content="Will Currie">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -15,7 +15,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/custom.css">
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -34,58 +36,117 @@
 
 		<div class="reveal">
 
-			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 
 				<section>
-					<h1>Reveal.js</h1>
-					<h3>HTML Presentations Made Easy</h3>
-					<p>
-						<small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
-					</p>
+					<h2><img src="img/js.svg" alt="JS logo" style="width: 100px; border: none; margin: 0;"/> false friends</h2>
+					<h4>this,{} and Dude where are my classes?</h4>
 				</section>
 
 				<section>
-					<h2>Heads Up</h2>
+					<h2>Javascript and Java</h2>
 					<p>
-						reveal.js is a framework for easily creating beautiful presentations using HTML. You'll need a browser with
-						support for CSS 3D transforms to see it in its full glory.
+						Same same but different
 					</p>
-
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
+                    <ul style="float: left">
+                        <li class="fragment">4 letters: j a v a</li>
+                        <li class="fragment">curly brackets {}</li>
+                        <li class="fragment">semicolons ;</li>
+                        <li class="fragment">'.' method invocation</li>
+                        <li class="fragment"><code>new</code> operator</li>
+                        <li class="fragment"><code>this</code> keyword</li>
+                    </ul>
+                    <ul style="float: right">
+                        <li class="fragment">interpreted vs 'compiled'</li>
+                        <li class="fragment">dynamic vs static typing</li>
+                        <li class="fragment">no <code>class</code> keyword</li>
+                        <li class="fragment"><code>function</code> keyword</li>
+                    </ul>
 				</section>
 
-				<!-- Example of nested vertical slides -->
 				<section>
 					<section>
-						<h2>Vertical Slides</h2>
-						<p>
-							Slides can be nested inside of other slides,
-							try pressing <a href="#" class="navigate-down">down</a>.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
+						<h3><code>this</code></h3>
+						<pre><code data-trim>
+<button onClick="alert(this.textContent)">Click Me</button>
+						</code></pre>
+						<pre class="fragment"><code data-trim>
+<script>
+    function foo(){ alert(this.textContent); }
+</script>
+<button onClick="foo()">Click Me</button>
+						</code></pre>
 					</section>
 					<section>
-						<h2>Basement Level 1</h2>
-						<p>Press down or up to navigate.</p>
+						<h2>Assignment of <code>this</code></h2>
+						<p>Depends on how the <code>function</code> is invoked</p>
+                        <ul>
+                            <li>method</li>
+                            <li>function</li>
+                            <li>constructor</li>
+                            <li>apply/call</li>
+                        </ul>
 					</section>
 					<section>
-						<h2>Basement Level 2</h2>
-						<p>Cornify</p>
-						<a class="test" href="http://cornify.com">
-							<img width="280" height="326" src="https://s3.amazonaws.com/hakim-static/reveal-js/cornify.gif" alt="Unicorn">
-						</a>
+						<h2>Method</h2>
+						<p>Familiar to a Java developer</p>
+						<pre><code data-trim data-demo="show-output">
+var obj = {
+    aValue: 'Hi',
+    aMethod: function() { console.log(this.aValue); }
+}
+obj.aMethod();
+                        </code></pre>
 					</section>
 					<section>
-						<h2>Basement Level 3</h2>
-						<p>That's it, time to go back up.</p>
-						<a href="#/2" class="image">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
-						</a>
+						<h2>Function</h2>
+						<p>Familiar to a C developer</p>
+						<pre><code data-trim data-demo="show-output" contenteditable>
+var obj = {
+    aValue: 'Hi',
+    aMethod: function() { console.log(this.aValue); }
+}
+var f = obj.aMethod;
+f();
+                        </code></pre>
+                        <!--
+                        * Change this.aValue to this to show this refers to Window (the global object)
+                        * Add "use strict"; to show prevention
+                        -->
+					</section>
+					<section>
+						<h2>Constructor</h2>
+						<p>Looks a bit like Java</p>
+						<pre><code data-trim data-demo="show-output" contenteditable>
+function Thing(v) {
+    this.aValue = v;
+}
+t = new Thing('a');
+console.log(t);
+                        </code></pre>
+                        <!--
+                        * Drop new to show t is undefined but aValue has been set in the global scope
+                        * Show "use strict"; again
+                        -->
+					</section>
+					<section>
+						<h2>Apply/Call</h2>
+						<p>Functions have methods. Two of these methods let us invoke the function.</p>
+						<pre><code data-trim data-demo="show-output" contenteditable>
+function foo(v) {
+    console.log("this=" + this + ", v=" + v);
+}
+foo.apply("a", [1,'ignored']);
+                        </code></pre>
+                        <div class="fragment">
+                            <h4>Why?</h4>
+                            <ul>
+                                <li>Chain constructor calls like Java's super()</li>
+                                <li>Proxy to add logging</li>
+                                <li>Mocking, stubbing, spying</li>
+                                <li>Clever/because you can</li>
+                            </ul>
+                        </div>
 					</section>
 				</section>
 
@@ -331,6 +392,19 @@ function linkify( selector ) {
 
 		</div>
 
+        <div id="demo-modal" class="modal hide fade">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Demo</h3>
+            </div>
+            <div class="modal-body">
+                <iframe id="demo-frame" src="#" frameborder="0"></iframe>
+            </div>
+        </div>
+
+        <script src="js/jquery-1.8.2.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="plugin/live-demo/live-demo.js"></script>
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
 
@@ -352,7 +426,7 @@ function linkify( selector ) {
 					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
 					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); liveDemo.init(); } },
 					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
