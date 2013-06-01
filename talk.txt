@@ -1,15 +1,20 @@
+* explain 'this' in constrast with java
+ - explicity binding in JS vs implicit in java
+
+* java 8 lambda and method reference 
+ - motivating case for java method reference
+
+* instanceof ?
+
+* use fragments to cycle through code edits?
+
 Revisit:
  => functions in ES6
  simpler this binding in Typescript and Coffeescript
  ES6 let statement
 
-{}
-* hoisting
-
 closures
 * for loop to build a set of buttons
-
-for in loop can return unwanted members
 
 where are my classes?
 
@@ -18,3 +23,5 @@ where are my classes?
 
 only one thread
 * show for loop locking up the UI?
+
+* find definitions for lexical scope and alternatives
