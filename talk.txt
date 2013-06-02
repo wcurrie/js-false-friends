@@ -4,8 +4,6 @@
 * java 8 lambda and method reference 
  - motivating case for java method reference
 
-* instanceof ?
-
 * use fragments to cycle through code edits?
 
 Revisit:
@@ -16,12 +14,10 @@ Revisit:
 closures
 * for loop to build a set of buttons
 
-where are my classes?
-
-== vs === 
-* type coercion
-
-only one thread
-* show for loop locking up the UI?
+* typescript?
 
 * find definitions for lexical scope and alternatives
+ - lexical is source code order (aka static because the compiler can decide)
+ - dynamic is stack order (runtime only)
+
+http://howtonode.org/what-is-this

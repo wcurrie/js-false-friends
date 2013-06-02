@@ -17,6 +17,7 @@
 		<link rel="stylesheet" href="css/reveal.min.css">
 		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
 		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/custom.css">
 
 		<!-- For syntax highlighting -->
@@ -44,20 +45,37 @@
 				</section>
 
 				<section>
-                    <figure>
-                        <blockquote>
-                            &ldquo;JavaScript is the only language people feel like they don't need to learn to use.&ldquo;
-                            <div style="text-align: right">
-                                <small>Douglas Crockford</small>
-                            </div>
-                        </blockquote>
-                    </figure>
+                    <section>
+                        <figure>
+                            <blockquote>
+                                &ldquo;JavaScript is the only language people feel like they don't need to learn to use.&ldquo;
+                                <div style="text-align: right">
+                                    <small>Douglas Crockford</small>
+                                </div>
+                            </blockquote>
+                        </figure>
 
-                    <small class="fragment">He's also called it the world's most <a href="http://www.crockford.com/javascript/javascript.html">misunderstood</a> programming language.</small>
-                    <!--
-                    * A language targeted at amateurs adding bling to web pages
-                    * Chequeured history including a name selected to confuse
-                    -->
+                        <small class="fragment">He's also called it the world's most <a href="http://www.crockford.com/javascript/javascript.html">misunderstood</a> programming language.</small>
+                        <!--
+                        * First a couple of quotes from some folks that know a lot more about JS than me
+                        * A language targeted at amateurs adding bling to web pages
+                        * Chequeured history including a name selected to confuse
+                        -->
+                    </section>
+                    <section>
+                        <figure>
+                            <blockquote>
+                                &ldquo;JavaScript borrows most of its syntax from Java, but also inherits from Awk and Perl, with some indirect influence from <a href="http://en.wikipedia.org/wiki/Self_(programming_language)">Self</a> in its object prototype system.&ldquo;
+                                <div style="text-align: right">
+                                    <small>Brendan Eich</small>
+                                </div>
+                            </blockquote>
+                            <!--
+                            * Creator of Javascript
+                            * First part of the quote explains the 'friends'. The Self part accounts for 'where are my classes'
+                            -->
+                        </figure>
+                    </section>
 				</section>
 
                 <!--
@@ -88,7 +106,7 @@
 
 				<section>
 					<section>
-						<h3><code>this</code></h3>
+						<h2><code>this</code></h2>
 						<pre><code data-trim data-demo="dialog">
 <button onClick="alert(this.textContent)">Click Me</button>
 						</code></pre>
@@ -186,15 +204,32 @@ foo.apply("a", [1,'ignored']);
 
 				<section>
 					<h2>Recap</h2>
-					<p>
-						TODO Example using jquery callback
-					</p>
+                    <pre><code data-trim contenteditable data-demo="show-output" data-exec-inline="true" style="max-height: 500px">
+function Dialog(logger) {
+    this.logger = logger;
+    this.buttons = [];
+    this.handleButtonClick = function(label) {
+        this.logger.log('clicked: ' + label);
+    };
+    this.display = function(labels) {
+        for (var i = 0; i < labels.length; i++) {
+            this.buttons.push({
+                click: function() {
+                    this.handleButtonClick(labels[i]);
+                }
+            });
+        }
+    };
+}
+var d = new Dialog(console);
+d.display(['one','two','three']);
+d.buttons[0].click();
+                    </code></pre>
 				</section>
-
 				<section>
 					<h2>Why the complexity?</h2>
 					<p>
-						TODO Example showing code reuse through prototypal inheritance
+						TODO Example showing code reuse through prototype inheritance
 					</p>
 				</section>
                 <section>
@@ -239,7 +274,7 @@ buttons[0].click();
                 </section>
 
 				<section>
-					<h2>IIFE</h2>
+					<h2><a href="http://en.wikipedia.org/wiki/Immediately-invoked_function_expression">IIFE</a></h2>
                     <h4>Immediately Invoked Function Expression</h4>
 					<p>
 						In Java there is a dedicated <code>package</code> keyword to control visibility of names.
@@ -305,12 +340,84 @@ var obj = new Whatsit();
                     <section>
                         <h2>Constructor Functions</h2>
                         <p>Convention: functions starting with an uppercase letter must be called using <code>new</code></p>
+                        <pre><code data-trim data-demo="show-output">
+function Whatsit() {
+    this.field = 'value';
+    this.method = function() {
+        return this.field.toUpperCase();
+    };
+}
+var obj = new Whatsit();
+console.log(obj.method());
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Prototypes</h2>
+                        <p>Alternative way to attach methods to an object</p>
+                        <pre><code data-trim data-demo="show-output">
+function Whatsit() {
+    this.field = 'value';
+}
+Whatsit.prototype.method = function() {
+    return this.field.toUpperCase();
+};
+var obj = new Whatsit();
+console.log(obj.method());
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Prototype Chaining</h2>
+                        <p>Code reuse. A little like inheritance in Java.</p>
+                        <pre><code data-trim data-demo="show-output" contenteditable>
+function Parent(name) {
+    this.name = name
+}
+Parent.prototype.giggle = function() {
+    console.log(this.name + ': "he he he"');
+};
+function Child(name) {
+    Parent.call(this, name);
+}
+Child.prototype = new Parent();
+Child.prototype.belch = function() {
+    console.log(this.name + ': belch!');
+}
+var c = new Child('bert');
+c.giggle();
+c.belch();
+//new Parent('ernie').belch();
+</code></pre>
                     </section>
                 </section>
 
+                <section>
+                    <section>
+                        <h2>== vs ===</h2>
+                        <p>By design JS is forgiving to let amateurs get something working</p>
+                        <p>== and != coerce, === and !== don't</p>
+                        <pre><code data-trim>
+'' == '0'           // false
+0 == ''             // true
+0 == '0'            // true
+                        </code></pre>
+                        <p class="fragment">Use === and !== unless you type coercion is useful</p>
+                    </section>
+                    <section>
+                        <h2>Single Thread</h2>
+                        <p>JS execution blocks the UI thread in the browser.</p>
+                        <p>For <a id="blockingExample" href="" target="_blank">example</a>.</p>
+                        <pre><code id="killerScript">
+while(true) {
+}
+                        </code></pre>
+                    </section>
+                </section>
+                <!--
+                * Hipster: unique, 'creative', nuanced vs Engineered: predictable, understandable, repeatable
+                -->
 				<section>
 					<h1>THE END</h1>
-                    <img src="img/hipster-fox.jpg" alt=""/>
+                    <img src="img/hipster-fox.jpg" alt="" style="height: 200px"/>
 				</section>
 
 			</div>
@@ -361,6 +468,12 @@ var obj = new Whatsit();
 			});
 
 		</script>
+
+        <script>
+            $(function() {
+                $("#blockingExample").attr("href", "data:text/html,%3Cscript%3E" + $("#killerScript").text() + "%3C/script%3E");
+            });
+        </script>
 
 	</body>
 </html>
