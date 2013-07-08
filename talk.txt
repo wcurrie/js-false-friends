@@ -21,3 +21,6 @@ closures
  - dynamic is stack order (runtime only)
 
 http://howtonode.org/what-is-this
+
+syntax highlighting:
+https://gist.github.com/cowboy/4171437
