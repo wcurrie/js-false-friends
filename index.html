@@ -166,8 +166,7 @@ function Thing() {
     this.func = function() {
         console.log('a=' + <span class="lexical">a</span> + ' b=' + <span class="thisy">this.b</span>);
     };
-}
-                        </pre>
+}</pre>
                     <aside class="notes">
                         <ul>
                             <li>Before looking further let's consider an example free of the DOM and HTML: just the language itself.</li>
@@ -247,6 +246,29 @@ f();
                             </ul>
                         </aside>
 					</section>
+                    <section>
+                        <h2>Java 8</h2>
+                        <p>Method reference</p>
+                        <pre><code data-trim>
+public class A implements Runnable {
+    String b = "a";
+    static void foo(Runnable r) {
+        r.run();
+    }
+    public static void main(String[] args) throws Exception {
+        A a = new A();
+        foo(a::run);
+    }
+    public void run() {
+        System.out.println(this.b);  // prints a
+    }
+}
+                        </code></pre>
+                        <small>See Oracle <a href="http://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html">docs</a></small>
+                        <aside class="notes">
+                            Compared with javascript in java 8 this is always bound lexically.
+                        </aside>
+                    </section>
 					<section>
 						<h2>Constructor</h2>
 						<p>Looks a bit like Java</p>
