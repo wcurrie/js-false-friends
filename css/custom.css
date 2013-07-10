@@ -16,4 +16,20 @@
     color: #DCDCDC;
 }
 
+.manual-highlight {
+    background: #ffffff;
+}
+
+.manual-highlight .lexical {
+    background: #d08a1d;
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
+.manual-highlight .thisy {
+    background: violet;
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
 

@@ -41,7 +41,7 @@ var liveDemo = (function() {
                         click = 'liveDemo.show(' + thisSnippet + ')';
                     }
                     $('<a class="btn demoButton" href="#" onclick="return ' + click + '"><i class="icon-play"></i></a>').appendTo(this);
-                    $this.keydown(function(e) {
+                    $this.keydown(function (e) {
                         if (e.which === 13 && e.metaKey) {
                             executeSnippet(thisSnippet)
                         }

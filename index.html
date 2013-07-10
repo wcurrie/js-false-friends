@@ -41,7 +41,16 @@
 				<section>
 					<h2><img src="img/js.svg" alt="JS logo" style="width: 100px; border: none; margin: 0;"/> false friends</h2>
 					<h4>this,{} and Dude where are my classes?</h4>
-				</section>
+                    <aside class="notes">
+                        <ul>
+                            <li>I want to talk about some things that confused me as a Java programmer learning JavaScript.</li>
+                            <li>3 broad points: </li>
+                            <li><code>this</code> is a keyword that is perhaps best avoided</li>
+                            <li>{} refers to curly brackets behaving differently to Java and other {} languages</li>
+                            <li>'where are my classes' refers to the language missing a keyword we are pretty familiar with typing and a concept we're familiar with thinking and talking about</li>
+                        </ul>
+                    </aside>
+                </section>
 
 				<section>
                     <section>
@@ -55,11 +64,14 @@
                         </figure>
 
                         <small class="fragment">He's also called it the world's most <a href="http://www.crockford.com/javascript/javascript.html">misunderstood</a> programming language.</small>
-                        <!--
-                        * First a couple of quotes from some folks that know a lot more about JS than me
-                        * A language targeted at amateurs adding bling to web pages
-                        * Chequeured history including a name selected to confuse
-                        -->
+                        <aside class="notes">
+                            <ul>
+                                <li>First a couple of quotes from some folks that know a lot more about JS than me</li>
+                                <li>Crockford: author of 'The good parts', popularized JSON data format, authored jslint, has an excellent series of YUI Theatre talks on youtube</li>
+                                <li>A language targeted at amateurs writing web pages</li>
+                                <li>2nd quote: chequered history including a name selected as a marketting ploy</li>
+                            </ul>
+                        </aside>
                     </section>
                     <section>
                         <figure>
@@ -69,19 +81,15 @@
                                     <small>Brendan Eich</small>
                                 </div>
                             </blockquote>
-                            <!--
-                            * Creator of Javascript
-                            * First part of the quote explains the 'friends'. The Self part accounts for 'where are my classes'
-                            -->
                         </figure>
+                        <aside class="notes">
+                            <ul>
+                                <li>Eich: Creator of Javascript</li>
+                                <li>First part of the quote explains the 'friends'. The Self part accounts for 'where are my classes'</li>
+                            </ul>
+                        </aside>
                     </section>
 				</section>
-
-                <!--
-                Why is JS interesting to Tyro?
-                To some extent JS (plus HTML, CSS and the APIs) has succeeded where Java failed: write once run anywhere
-                -->
-
 				<section>
                     <section>
                         <img src="img/p7.jpg" alt="" style="height: 500px; border: none"/>
@@ -109,24 +117,68 @@
                             <li class="fragment"><code>function</code> keyword</li>
                         </ul>
                     </section>
+                    <aside class="notes">
+                        <ul>
+                            <li>Above the water line on the left</li>
+                            <li>Starting to sink below on the right</li>
+                        </ul>
+                    </aside>
 				</section>
-
-				<section>
-					<section>
-						<h2><code>this</code></h2>
-						<pre><code data-trim data-demo="dialog">
-<button onClick="alert(this.textContent)">Click Me</button>
-						</code></pre>
-						<pre class="fragment"><code data-trim data-demo="dialog">
+                <section>
+                    <h2><code>this</code></h2>
+						<pre><code data-trim data-demo="dialog" contenteditable>
+<button onClick="greeter.sayHi()">Click Me</button>
 <script>
-    function foo(){ alert(this.textContent); }
+    function Greeter(){
+        this.message = 'Hi Tyro';
+        this.sayHi = function() { alert(this.message) };
+    }
+    var greeter = new Greeter();
 </script>
-<button onClick="foo()">Click Me</button>
-						</code></pre>
-					</section>
-					<section>
-						<h2>Assignment of <code>this</code></h2>
-						<p>Depends on how the <code>function</code> is invoked</p>
+                        </code></pre>
+						<pre class="fragment"><code data-trim data-demo="dialog" contenteditable>
+<button id="btn">Click Me</button>
+<script>
+    function Greeter(){
+        this.message = 'Hi Tyro';
+        this.sayHi = function() { alert(this.message) };
+    }
+    var greeter = new Greeter();
+    document.getElementById("btn").onclick = greeter.sayHi;
+</script>
+                        </code></pre>
+                    <aside class="notes">
+                        <ul>
+                            <li>I struggled to find realistic examples that were simple enough for a slide</li>
+                            <li>First example works, Second fails showing undefined</li>
+                            <li>Change this.message to var message = in 2nd example to show this is at fault</li>
+                        </ul>
+                    </aside>
+                </section>
+                <section>
+                    <h2><code>Scope and Binding</code></h2>
+						<pre class="manual-highlight">
+var a = 'global';
+
+function Thing() {
+    var <span class="lexical">a</span> = 'lexical';
+    <span class="thisy">this.b</span> = 'not quite';
+    this.func = function() {
+        console.log('a=' + <span class="lexical">a</span> + ' b=' + <span class="thisy">this.b</span>);
+    };
+}
+                        </pre>
+                    <aside class="notes">
+                        <ul>
+                            <li>Before looking further let's consider an example free of the DOM and HTML: just the language itself.</li>
+                            <li>Here regardless of how func() is invoked a print as 'lexical' but b is more complicated.</li>
+                        </ul>
+                    </aside>
+                </section>
+				<section>
+                    <section>
+                        <h2>Assignment of <code>this</code></h2>
+                        <p>Depends on how the <code>function</code> is invoked</p>
                         <table style="margin: 0 auto">
                             <tr>
                                 <td><code>obj.f()</code></td>
@@ -141,11 +193,28 @@
                                 <td>constructor</td>
                             </tr>
                             <tr>
-                                <td><code>f.appy()</code></td>
+                                <td><code>f.apply()</code></td>
                                 <td>apply/call</td>
                             </tr>
                         </table>
-					</section>
+                        <div class="fragment" style="padding-top: 20px">
+                            <div style="padding: 10px">MDN <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">lists</a> 3 more ways</div>
+                            <ul>
+                                <li>elem.addEventListener('click',f)</li>
+                                <li>element.onclick = f</li>
+                                <li>f = f.bind(obj)</li>
+                            </ul>
+                        </div>
+                        <aside class="notes">
+                            <ul>
+                                <li>This slide contains most of what I wanted to say in this presentation.</li>
+                                <li>True to Crockford's quote I didn't go and read to learn about this concept until I ended up scratching my head after writing some code.</li>
+                                <li>There are 4 different ways you can invoke a piece of code defined using the function keyword.</li>
+                                <li>For completeness Mozilla's Developer Network pages include a few other cases.</li>
+                            </ul>
+
+                        </aside>
+                    </section>
 					<section>
 						<h2>Method</h2>
 						<p>Familiar to a Java developer</p>
@@ -168,10 +237,15 @@ var obj = {
 var f = obj.aMethod;
 f();
                         </code></pre>
-                        <!--
-                        * Change this.aValue to this to show this refers to Window (the global object)
-                        * Add "use strict"; to show prevention
-                        -->
+                        <aside class="notes">
+                            <ul>
+                                <li>Take a reference to a function and invoke it without an object and dot in front. Functions are first class citizens in JS.</li>
+                                <li>Change this.aValue to this to show this refers to Window (the global object)</li>
+                                <li>Add "use strict"; to show undefined is printed</li>
+                                <li>With "use strict"; revert to printing this.aValue which shows error. Demonstrating the intent of "use strict"; in this case</li>
+                                <li>Strict mode was added at some point in Javascript's murky past to try and improve quality of life for developers.</li>
+                            </ul>
+                        </aside>
 					</section>
 					<section>
 						<h2>Constructor</h2>
@@ -180,64 +254,63 @@ f();
 function Thing(v) {
     this.aValue = v;
 }
-t = new Thing('a');
+var t = new Thing('a');
 console.log(t);
                         </code></pre>
-                        <!--
-                        * Drop new to show t is undefined but aValue has been set in the global scope
-                        * Show "use strict"; again
-                        -->
+                        <aside class="notes">
+                            <ul>
+                                <li>Drop new to show t is undefined but aValue has been set in the global scope</li>
+                                <li>Add "use strict"; to show fail fast rather than global namespace pollution</li>
+                                <li>Constructors are just a convention. Initial uppercase letters are not required or meaningful beyond humans</li>
+                                <li>Some folks write code that detects if the developer made a mistake and corrects for them. Eg:
+                                    <pre>
+var t = typeof this === "undefined" ? {} : this;
+t.aValue = v;
+return t;
+                                    </pre>
+                                </li>
+                            </ul>
+                        </aside>
 					</section>
 					<section>
 						<h2>Apply/Call</h2>
 						<p>Functions have methods. Two of these methods let us invoke the function.</p>
 						<pre><code data-trim data-demo="show-output" contenteditable>
-function foo(v) {
-    console.log("this=" + this + ", v=" + v);
+function foo(v1, v2) {
+    console.log("this=" + this + ", v1=" + v1 + ", v2=" + v2);
 }
 foo.apply("a", [1,'ignored']);
                         </code></pre>
                         <div class="fragment">
-                            <h4>Why?</h4>
-                            <ul>
-                                <li>Chain constructor calls like Java's super()</li>
-                                <li>Proxy to add logging</li>
-                                <li>Mocking, stubbing, spying</li>
-                                <li>Clever/because you can</li>
-                            </ul>
-                        </div>
-					</section>
-				</section>
+                            <p>Similar to reflection api in java</p>
+                            <pre><code data-trim>
+public class A {
+    void foo(String v) {}
 
-				<section>
-					<h2>Recap</h2>
-                    <pre><code data-trim contenteditable data-demo="show-output" data-exec-inline="true" style="max-height: 500px">
-function Dialog(logger) {
-    this.logger = logger;
-    this.buttons = [];
-    this.handleButtonClick = function(label) {
-        this.logger.log('clicked: ' + label);
-    };
-    this.display = function(labels) {
-        for (var i = 0; i < labels.length; i++) {
-            this.buttons.push({
-                click: function() {
-                    this.handleButtonClick(labels[i]);
-                }
-            });
-        }
-    };
+    public static void main(String[] args) throws Exception {
+        Method foo = A.class.getDeclaredMethod("foo", String.class);
+        foo.invoke(new A(), "v");
+    }
 }
-var d = new Dialog(console);
-d.display(['one','two','three']);
-d.buttons[0].click();
-                    </code></pre>
+                            </code></pre>
+                        </div>
+                        <aside class="notes">
+                            <ul>
+                                <li>Change apply to call to show difference.</li>
+                                <li>Like java's Method.invoke(). It is useful in some similar ways in JS</li>
+                                <li>Proxy, aspect</li>
+                                <li>Mocking, stubbing, spying</li>
+                                <li>Chain constructor calls like Java's super()</li>
+                            </ul>
+                        </aside>
+					</section>
 				</section>
 				<section>
 					<h2>Why the complexity?</h2>
 					<p>
-						TODO Example showing code reuse through prototype inheritance
+						The dynamic binding of <code>this</code> allows some Object Oriented properties if you choose that coding style.
 					</p>
+                    <p>Example later if time.</p>
 				</section>
                 <section>
 				<section>
@@ -245,6 +318,19 @@ d.buttons[0].click();
 					<p>
 						In most other languages {} create a new scope. Not so in Javascript.
 					</p>
+                    <pre><code data-trim data-demo="show-output" contenteditable>
+if (true) {
+    var a = 'a';
+}
+console.log(a);
+                    </code></pre>
+                    <p class="fragment">The only way to get a new scope is using the <code>function</code> keyword.</p>
+                    <aside class="notes">
+                        If we tried something similar in Java it simply would not compile.
+                    </aside>
+				</section>
+				<section>
+					<h2>Looping</h2>
                     <pre><code data-trim data-demo="show-output" contenteditable>
 var buttons = [];
 for (var i = 1; i < 4; i++) {
@@ -256,27 +342,12 @@ for (var i = 1; i < 4; i++) {
 }
 buttons[0].click();
                     </code></pre>
-                    <p class="fragment">The only way to get a new scope is to create a <code>function</code> that declares a variable.</p>
-                    <!--
-                    * Add IIFE function(i) wrapper to show one fix
-                    -->
-				</section>
-				<section>
-					<h2>A neater way</h2>
-					<p>
-						To deal with the looping problem
-					</p>
-                    <pre><code data-trim data-demo="show-output" contenteditable>
-var buttons = [];
-[1,2,3].forEach(function(i) {
-    buttons.push({
-        click: function() {
-            console.log('clicked ' + i);
-        }
-    });
-});
-buttons[0].click();
-                    </code></pre>
+                    <aside class="notes">
+                        <ul>
+                            <li>Extract inner function to function creation using clickMaker()</li>
+                            <li>Reload page and use an iffy instead. Don't use name yet.</li>
+                        </ul>
+                    </aside>
 				</section>
                 </section>
 
@@ -297,6 +368,13 @@ buttons[0].click();
 })( window );
                     </code></pre>
                     <p class="fragment">Understanding this concept makes reading codebases like <a href="http://code.jquery.com/jquery-1.10.0.js">jquery</a> slightly less mind bending.</p>
+                    <aside class="notes">
+                        <ul>
+                            <li>The pattern I showed second there is has it's very own name.</li>
+                            <li>Pronounced 'iffy' according to wikipedia</li>
+                            <li>Old idiom: lisp and lambda calculus</li>
+                        </ul>
+                    </aside>
 				</section>
 
 				<section>
@@ -309,6 +387,9 @@ function f() {
 f();
 console.log(oops);
                     </code></pre>
+                    <aside class="notes">
+                        Add var to oops and show reference error.
+                    </aside>
 				</section>
 
                 <section>
@@ -322,12 +403,13 @@ function f() {
 }
 f();
                     </code></pre>
-                    <!--
-                    * Doesn't look surprising. It says 'undefined'
-                    * Comment out to show difference between 'undefined' (declared but not defined) and not declared
-                    * Show with an if (true) {} to show a being hoisted to outer block
-                    * Show with an IIFE to show new scope kicking in
-                    -->
+                    <aside class="notes">
+                        <ul>
+                            <li>Doesn't look surprising. It says 'undefined'</li>
+                            <li>Comment out to show difference between 'undefined' (declared but not defined) and not declared</li>
+                            <li>Move var a to top to show what the computer is interpreting the code to mean.</li>
+                        </ul>
+                    </aside>
                 </section>
 
                 <section>
@@ -371,6 +453,11 @@ Whatsit.prototype.method = function() {
 var obj = new Whatsit();
 console.log(obj.method());
                         </code></pre>
+                        <aside class="notes">
+                            <ul>
+                                <li>Perhaps the closest thing to classes in Javascript. In the sense they are templates from which instances are moulded.</li>
+                            </ul>
+                        </aside>
                     </section>
                     <section>
                         <h2>Prototype Chaining</h2>
@@ -396,7 +483,43 @@ c.belch();
 </code></pre>
                     </section>
                 </section>
-<!-- Use some material from https://speakerdeck.com/anguscroll/how-we-learned-to-stop-worrying-and-love-javascript -->
+                <section>
+                    <h2>Recap</h2>
+                    <pre><code data-trim contenteditable data-demo="show-output" data-exec-inline="true" style="max-height: 500px">
+var d = new Dialog(console, ['one','two','three']);
+d.buttons[0].click();
+
+function Dialog(logger,labels) {
+    this.logger = logger;
+    this.buttons = [];
+    this.handleButtonClick = function(label) {
+        this.logger.log('clicked: ' + label);
+    };
+    for (var i = 0; i < labels.length; i++) {
+        this.buttons.push({
+            click: function() {
+                this.handleButtonClick(labels[i]);
+            }
+        });
+    }
+}
+                    </code></pre>
+                    <aside class="notes">
+                        <ul>
+                            <li>I apologise for the amount of code on the screen. I wanted a slightly realistic example. One of the things the iclient does is show questions to a merchant.</li>
+                            <li>I wrote a piece of code similar to this one when spiking the iclient thinking I could write JS without learning it first. I was wrong.</li>
+                            <li>This example is broken on a couple of levels. It is a little contrived.</li>
+                            <li>Given our knowledge of this being a slippery sucker, remove this from handleButtonClick. Make it a var. Running shows 'clicked: undefined'</li>
+                            <li>More head scratching. Add console.log(i) to click function. Shows 3. Try other buttons.</li>
+                            <li>{} don't create a new scope. The 3 callback functions we created all refer to the single variable used in loop iteration.
+                                The variable runs off the end of the list as we finish the loop.</li>
+                            <li>We can solve this problem using an iffy. Add iffy around push call. Will require passing in buttons.</li>
+                            <li>Looks horrible. Replace with labels.forEach(). Requires passing in this as last parameter.</li>
+                            <li>Confused. Let's heed some of Crockford's advice and not use this.</li>
+                        </ul>
+                    </aside>
+                </section>
+                <!-- Use some material from https://speakerdeck.com/anguscroll/how-we-learned-to-stop-worrying-and-love-javascript -->
                 <section>
                     <section>
                         <h2>== vs ===</h2>
@@ -417,6 +540,12 @@ c.belch();
 while(true) {
 }
                         </code></pre>
+                        <aside class="notes">
+                            <ul>
+                                <li>This example is kind of fun and a good one for near the end since it will crash my slide deck.</li>
+                                <li>Use time to talk about turn based programming: our terminals, windows, swing. Talks a minute or two.</li>
+                            </ul>
+                        </aside>
                     </section>
                 </section>
                 <section>
@@ -436,6 +565,12 @@ while(true) {
                             <li>repeatable</li>
                         </ul>
                     </div>
+                    <aside class="notes">
+                        <ul>
+                            <li>Pick pretty much any noun, stick .js on the end and you have a library on github</li>
+                            <li>To some extent JS (plus HTML, CSS and the APIs) has succeeded where Java failed: write once run lots of places</li>
+                        </ul>
+                    </aside>
                 </section>
 				<section>
 					<h1>THE END</h1>
