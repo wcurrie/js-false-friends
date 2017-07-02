@@ -1,0 +1,35 @@
+.neon-green {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
+}
+
+.neon-red {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
+}
+
+.demoButton {
+    float: right;
+    width: 26px;
+}
+
+.evalResult {
+    background: #3F3F3F;
+    color: #DCDCDC;
+}
+
+.manual-highlight {
+    background: #ffffff;
+}
+
+.manual-highlight .lexical {
+    background: #d08a1d;
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
+.manual-highlight .thisy {
+    background: violet;
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
+
